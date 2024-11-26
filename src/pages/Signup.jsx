@@ -10,24 +10,30 @@ const Signup = () => {
   };
 
   return (
-    <>
-      <div>Signup</div>
-      <input name="id" onChange={handleInputChange} placeholder="아이디" />
-      <input
-        name="password"
-        onChange={handleInputChange}
-        placeholder="비밀번호"
-      />
-      <input
-        name="nickname"
-        onChange={handleInputChange}
-        placeholder="닉네임"
-      />
-      <button onClick={() => register(input)}>회원가입</button>
-      <div>
-        이미 회원이신가요? <Link to="/login">로그인</Link>
+    <div className="parent">
+      <div className="compo">
+        <form onSubmit={() => register(input)}>
+          <input name="id" onChange={handleInputChange} placeholder="아이디" />
+          <input
+            name="password"
+            onChange={handleInputChange}
+            placeholder="비밀번호"
+          />
+          <input
+            name="nickname"
+            onChange={handleInputChange}
+            placeholder="닉네임"
+          />
+          <button>회원가입</button>
+        </form>
+        <div>
+          이미 회원이신가요?
+          <Link to="/login" className="link">
+            로그인
+          </Link>
+        </div>
       </div>
-    </>
+    </div>
   );
 };
 
