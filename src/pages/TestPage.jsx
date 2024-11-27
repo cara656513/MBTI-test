@@ -24,7 +24,7 @@ const TestPage = ({ user }) => {
     };
     fetchUser();
   }, []);
-  const { nickname } = userInfo;
+  const { nickname, id } = userInfo;
 
   const handleTestSubmit = async (answers) => {
     const mbtiResult = calculateMBTI(answers);
@@ -34,6 +34,8 @@ const TestPage = ({ user }) => {
       time: now,
       mbti: mbtiResult,
       nickname: nickname,
+      userId: id,
+      visibility: true,
     });
     setResult(mbtiResult);
   };

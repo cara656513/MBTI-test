@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { updateProfile, getUserProfile } from "../api/auth";
+import Swal from "sweetalert2";
 
 const Profile = () => {
   const [input, setInput] = useState("");
@@ -19,14 +20,26 @@ const Profile = () => {
     setInput(e.target.value);
   };
 
-  const handleChangeNickname = () => {
+  const handleChangeNickname = async (e) => {
+    e.preventDefault();
+
     const formData = new FormData();
     formData.append("nickname", input);
-
-    const updateNickname = () => {
-      updateProfile(formData, token);
-    };
-    updateNickname();
+    try {
+      await updateProfile(formData, token);
+      Swal.fire({
+        icon: "success",
+        title: "닉네임 변경에 성공하였습니다.",
+        confirmButtonText: "확인",
+      });
+    } catch (error) {
+      Swal.fire({
+        icon: "warning",
+        title: "닉네임 변경에 실패하였습니다.",
+        confirmButtonText: "확인",
+      });
+      console.log(error);
+    }
   };
 
   return (
