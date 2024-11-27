@@ -4,6 +4,7 @@ import { mbtiDescriptions } from "../utils/mbtiCalculator";
 
 const TestResultPage = () => {
   const [results, setResults] = useState([]);
+
   useEffect(() => {
     const fetchPost = async () => {
       const { data } = await axios.get("http://localhost:4000/testResults");
@@ -13,11 +14,16 @@ const TestResultPage = () => {
   }, []);
 
   return (
-    <div className="dp-flex">
+    <div className="grid justify-center text-center gap-4">
+      <div className="font-bold text-2xl my-8">모든 결과 보기</div>
       {results.map((data) => {
         return (
           <div className="compo" key={data.id}>
-            {data.time}에 {data.mbti}검사결과 나옴
+            <div className="flex justify-between mx-6 ">
+              <div>{data.nickname}</div>
+              <div>{data.time}</div>
+            </div>
+            <div className="font-bold text-2xl">{data.mbti}</div>
             {mbtiDescriptions[data.mbti]}
           </div>
         );

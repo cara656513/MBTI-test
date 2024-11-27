@@ -1,22 +1,39 @@
 // export default TestPage;
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import TestForm from "../components/TestForm";
 import { calculateMBTI, mbtiDescriptions } from "../utils/mbtiCalculator";
 // import { createTestResult } from "../api/testResults";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import moment from "moment-timezone";
+import { getUserProfile } from "../api/auth";
 
 const TestPage = ({ user }) => {
   const navigate = useNavigate();
   const [result, setResult] = useState(null);
+  const [userInfo, setUserInfo] = useState("");
+
+  const now = moment.tz("Asia/Seoul").format("LLLL");
+
+  useEffect(() => {
+    /* 현재 로그인한 유저 정보 가져오기 */
+    const token = localStorage.getItem("accessToken");
+    const fetchUser = async () => {
+      const data = await getUserProfile(token);
+      setUserInfo(data);
+    };
+    fetchUser();
+  }, []);
+  const { nickname } = userInfo;
 
   const handleTestSubmit = async (answers) => {
     const mbtiResult = calculateMBTI(answers);
 
     /* JSON 서버에 테스트 결과 삽입 */
     await axios.post("http://localhost:4000/testResults", {
-      time: new Date(),
+      time: now,
       mbti: mbtiResult,
+      nickname: nickname,
     });
     setResult(mbtiResult);
   };
@@ -27,17 +44,17 @@ const TestPage = ({ user }) => {
 
   return (
     <div className="w-full flex flex-col items-center justify-center bg-white">
-      <div className="bg-white rounded-lg p-8 max-w-lg w-full h-full overflow-y-auto">
+      <div className="bg-white rounded-lg p-8 max-w-2xl w-full h-full overflow-y-auto">
         {!result ? (
           <>
-            <h1 className="text-3xl font-bold text-primary-color mb-6">
+            <h1 className="text-3xl font-bold text-primary-color mb-6 text-center">
               MBTI 테스트
             </h1>
             <TestForm onSubmit={handleTestSubmit} />
           </>
         ) : (
           <>
-            <h1 className="text-3xl font-bold text-primary-color mb-6">
+            <h1 className="text-3xl font-bold text-primary-color mb-6 text-center">
               테스트 결과: {result}
             </h1>
             <p className="text-lg text-gray-700 mb-6">

@@ -1,9 +1,46 @@
 {
   "testResults": [
     {
-      "id": "017e",
-      "time": "2024-11-26T06:01:20.591Z",
-      "mbti": "INFP"
+      "id": "25e3",
+      "time": "Tuesday, November 26, 2024 8:58 PM",
+      "mbti": "ESTJ",
+      "nickname": "민민"
+    },
+    {
+      "id": "bd21",
+      "time": "Tuesday, November 26, 2024 8:58 PM",
+      "mbti": "INFP",
+      "nickname": "minmin1"
+    },
+    {
+      "id": "1cc6",
+      "time": "Tuesday, November 26, 2024 9:28 PM",
+      "mbti": "ESTJ",
+      "nickname": "minmin1"
+    },
+    {
+      "id": "b7f8",
+      "time": "Tuesday, November 26, 2024 9:39 PM",
+      "mbti": "ESTJ",
+      "nickname": "민민"
+    },
+    {
+      "id": "df08",
+      "time": "Tuesday, November 26, 2024 10:35 PM",
+      "mbti": "ESTJ",
+      "nickname": "민민"
+    },
+    {
+      "id": "d12a",
+      "time": "Wednesday, November 27, 2024 9:12 AM",
+      "mbti": "ESTJ",
+      "nickname": "민정"
+    },
+    {
+      "id": "2273",
+      "time": "Wednesday, November 27, 2024 9:14 AM",
+      "mbti": "ESTJ",
+      "nickname": "민민민"
     }
   ]
 }

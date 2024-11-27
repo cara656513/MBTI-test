@@ -19,7 +19,7 @@ const PrivateRoute = ({ element: Element, ...rest }) => {
 // 로그인이 되어있는 사용자는 mypage로 리다이렉트
 const PublicRoute = ({ element: Element, ...rest }) => {
   const { isAuthenticated } = useContext(AuthContext);
-  return !isAuthenticated ? <Element {...rest} /> : <Navigate to="/profile" />;
+  return !isAuthenticated ? <Element {...rest} /> : <Navigate to="/" />;
 };
 
 const Router = () => {
