@@ -1,14 +1,6 @@
 {
   "testResults": [
     {
-      "id": "f9b3",
-      "time": "2024.11.28 목요일 10시 32분",
-      "mbti": "ESTJ",
-      "nickname": "민민이",
-      "userId": "minmin",
-      "visibility": true
-    },
-    {
       "id": "b145",
       "time": "2024.11.28 목요일 10시 33분",
       "mbti": "ESTJ",
@@ -22,7 +14,7 @@
       "mbti": "ESTJ",
       "nickname": "민민이",
       "userId": "minmin",
-      "visibility": false
+      "visibility": true
     }
   ]
 }
