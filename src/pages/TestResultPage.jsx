@@ -33,7 +33,7 @@ const TestResultPage = () => {
 
   //비공개 버튼 눌렀을때
   const visiblizeResult = async (resultId) => {
-    const { data: result } = await jsonResultsApi.get(resultId);
+    const { data: result } = await jsonResultsApi.get(`/${resultId}`);
     await jsonResultsApi.patch(`/${resultId}`, {
       visibility: !result.visibility,
     });
