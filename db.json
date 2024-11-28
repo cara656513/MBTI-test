@@ -9,20 +9,20 @@
       "visibility": true
     },
     {
-      "id": "c7e4",
-      "time": "2024.11.28 목요일 10시 32분",
-      "mbti": "ESTJ",
-      "nickname": "민민이",
-      "userId": "minmin",
-      "visibility": false
-    },
-    {
       "id": "b145",
       "time": "2024.11.28 목요일 10시 33분",
       "mbti": "ESTJ",
       "nickname": "minmin1",
       "userId": "minmin1",
       "visibility": true
+    },
+    {
+      "id": "3da3",
+      "time": "2024.11.28 목요일 10시 35분",
+      "mbti": "ESTJ",
+      "nickname": "민민이",
+      "userId": "minmin",
+      "visibility": false
     }
   ]
 }
