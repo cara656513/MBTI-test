@@ -1,36 +1,30 @@
 // export default TestPage;
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import TestForm from "../components/TestForm";
 import { calculateMBTI, mbtiDescriptions } from "../utils/mbtiCalculator";
 // import { createTestResult } from "../api/testResults";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import moment from "moment-timezone";
-import { getUserProfile } from "../api/auth";
+import dayjs from "dayjs";
+import "dayjs/locale/ko";
+import jsonResultsApi from "../api/dbjson";
+import useCurrentUser from "../components/useCurrentUser";
 
-const TestPage = ({ user }) => {
+dayjs.locale("ko");
+
+const TestPage = () => {
   const navigate = useNavigate();
+  const now = dayjs().format("YYYY.MM.DD ddd요일 HH시 mm분");
   const [result, setResult] = useState(null);
-  const [userInfo, setUserInfo] = useState("");
 
-  const now = moment.tz("Asia/Seoul").format("LLLL");
+  // 유저인포 가져와서 닉네임,아이디 찢기
+  const { data: userInfo, isLoading: userIsLoading } = useCurrentUser();
 
-  useEffect(() => {
-    /* 현재 로그인한 유저 정보 가져오기 */
-    const token = localStorage.getItem("accessToken");
-    const fetchUser = async () => {
-      const data = await getUserProfile(token);
-      setUserInfo(data);
-    };
-    fetchUser();
-  }, []);
-  const { nickname, id } = userInfo;
-
+  //제출했을때
   const handleTestSubmit = async (answers) => {
     const mbtiResult = calculateMBTI(answers);
 
     /* JSON 서버에 테스트 결과 삽입 */
-    await axios.post("http://localhost:4000/testResults", {
+    await jsonResultsApi.post("", {
       time: now,
       mbti: mbtiResult,
       nickname: nickname,
@@ -43,6 +37,11 @@ const TestPage = ({ user }) => {
   const handleNavigateToResults = () => {
     navigate("/test-result");
   };
+
+  if (userIsLoading) {
+    return <div>Loading...</div>;
+  }
+  const { nickname, id } = userInfo;
 
   return (
     <div className="w-full flex flex-col items-center justify-center bg-white">

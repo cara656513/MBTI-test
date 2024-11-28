@@ -1,44 +1,61 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
 import { mbtiDescriptions } from "../utils/mbtiCalculator";
-import { getUserProfile } from "../api/auth";
+import jsonResultsApi from "../api/dbjson";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import useCurrentUser from "../components/useCurrentUser";
 
 const TestResultPage = () => {
-  const [results, setResults] = useState([]);
-  const [userInfo, setUserInfo] = useState("");
+  const queryClient = useQueryClient();
+  //유저 정보 가져오기
+  const { data: userInfo, isLoading: userIsLoading } = useCurrentUser();
 
+  //결과들 다 가져오기
   const fetchPost = async () => {
-    const { data } = await axios.get("http://localhost:4000/testResults");
-    setResults(data);
+    const { data } = await jsonResultsApi.get();
+    return data;
   };
 
-  useEffect(() => {
-    //results에 테스트 결과들을 담기
-    fetchPost();
-
-    //userInfo에 로그인한 유저 정보를 담기
-    const fetchUser = async () => {
-      const token = localStorage.getItem("accessToken");
-      const data = await getUserProfile(token);
-      setUserInfo(data);
-    };
-    fetchUser();
-  }, []);
+  const { data: results, isLoading } = useQuery({
+    queryKey: ["results"],
+    queryFn: fetchPost,
+  });
 
   //삭제 버튼 눌렀을때
-  const onClickDeleteButtonHandler = (resultId) => {
-    axios.delete(`http://localhost:4000/testResults/${resultId}`);
-    fetchPost();
+  const deleteResult = async (resultId) => {
+    await jsonResultsApi.delete(resultId);
   };
+
+  const { mutate } = useMutation({
+    mutationFn: deleteResult,
+    onSuccess: () => {
+      queryClient.invalidateQueries(["results"]);
+    },
+  });
 
   //비공개 버튼 눌렀을때
-  const onClickVisibleButtonHandler = (resultId, visibility) => {
-    axios.patch(`http://localhost:4000/testResults/${resultId}`, {
-      visibility: !visibility,
+  const visiblizeResult = async (resultId) => {
+    const { data: result } = await jsonResultsApi.get(resultId);
+    await jsonResultsApi.patch(resultId, {
+      visibility: !result.visibility,
     });
-    fetchPost();
   };
 
+  const { mutate: visibleMutate } = useMutation({
+    mutationFn: visiblizeResult,
+    onSuccess: () => {
+      queryClient.invalidateQueries(["results"]);
+    },
+  });
+
+  //유저,테스트결과 isloading if문
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (userIsLoading) {
+    return <div>Loading...</div>;
+  }
+
+  //결과 필터
   const filteredResult = results.filter(
     (result) => result.userId === userInfo.id || result.visibility === true
   );
@@ -58,16 +75,10 @@ const TestResultPage = () => {
 
             {userInfo.id === data.userId ? (
               <div>
-                <button
-                  onClick={() =>
-                    onClickVisibleButtonHandler(data.id, data.visibility)
-                  }
-                >
+                <button onClick={() => visibleMutate(data.id)}>
                   {data.visibility ? "비공개" : "공개"}
                 </button>
-                <button onClick={() => onClickDeleteButtonHandler(data.id)}>
-                  삭제
-                </button>
+                <button onClick={() => mutate(data.id)}>삭제</button>
               </div>
             ) : (
               ""

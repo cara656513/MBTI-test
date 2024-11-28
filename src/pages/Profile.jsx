@@ -1,20 +1,22 @@
 import { useState, useEffect } from "react";
-import { updateProfile, getUserProfile } from "../api/auth";
+import { updateProfile } from "../api/auth";
 import Swal from "sweetalert2";
+import useCurrentUser from "../components/useCurrentUser";
 
 const Profile = () => {
   const [input, setInput] = useState("");
   const token = localStorage.getItem("accessToken");
 
+  const { data, isLoading } = useCurrentUser();
+
   useEffect(() => {
-    /* 현재 로그인한 유저 정보 가져오기 */
-    const fetchUser = async (token) => {
-      const data = await getUserProfile(token);
-      const { nickname } = data;
-      setInput(nickname);
-    };
-    fetchUser(token);
-  }, [token]);
+    if (data?.nickname) {
+      setInput(data.nickname);
+    }
+  }, [data?.nickname]);
+  if (isLoading) {
+    return <div>로딩중...</div>;
+  }
 
   const handleInputChange = (e) => {
     setInput(e.target.value);

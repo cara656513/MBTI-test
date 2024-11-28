@@ -13,14 +13,12 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logoutLocal = () => {
-    localStorage.removeItem("accessToken");
+    localStorage.clear();
     setIsAuthenticated(false);
   };
 
   return (
-    <AuthContext.Provider
-      value={{ isAuthenticated, loginLocal, logoutLocal, token }}
-    >
+    <AuthContext.Provider value={{ isAuthenticated, loginLocal, logoutLocal }}>
       {children}
     </AuthContext.Provider>
   );
